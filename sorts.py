@@ -12,6 +12,7 @@ def getkey(dictionary):
         return i
 
 
+# for dict_list
 def quick_sort(lists, left, right):
     # 快速排序
     if left >= right:
@@ -29,6 +30,27 @@ def quick_sort(lists, left, right):
     lists[right][getkey(lists[right])] = value
     quick_sort(lists, low, left - 1)
     quick_sort(lists, left + 1, high)
+    return lists
+
+
+# for list_list
+def quick_sort2(lists, left, right):
+    # 快速排序
+    if left >= right:
+        return lists
+    value = lists[left]
+    low = left
+    high = right
+    while left < right:
+        while left < right and lists[right][1] >= value[1]:
+            right -= 1
+        lists[left] = lists[right]
+        while left < right and lists[left][1] <= value[1]:
+            left += 1
+        lists[right] = lists[left]
+    lists[right] = value
+    quick_sort2(lists, low, left - 1)
+    quick_sort2(lists, left + 1, high)
     return lists
 
 

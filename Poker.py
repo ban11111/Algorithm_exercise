@@ -24,3 +24,12 @@ if __name__ == "__main__":
         s = sorts.quick_sort(d, 0, len(d) - 1)
     end = time.clock()
     print("%f秒" % (end - start))
+
+    start = time.clock()
+    for i in firstMatch:
+        a = i["alice"]
+        alice = PT.str2list(a)
+        d = PT.list2list_list(alice, pokerDict)
+        s = sorts.quick_sort2(d, 0, len(d) - 1)
+    end = time.clock()
+    print("%f秒" % (end - start))
