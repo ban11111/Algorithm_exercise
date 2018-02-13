@@ -1,5 +1,5 @@
 def flush(list_list):
-
+    pass
 
 
 def getvalue(dictionary):
