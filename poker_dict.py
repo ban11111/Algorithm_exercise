@@ -9,7 +9,9 @@ class PokerDicts:
         self.numDict["Q"] = 12
         self.numDict["K"] = 13
         self.numDict["A"] = 14
+        self.numDict["X"] = -1
 
         for i in ["s", "h", "d", "c"]:
             for key, value in self.numDict.items():
                 self.pokerDict[key + i] = value
+        self.pokerDict["Xn"] = -1

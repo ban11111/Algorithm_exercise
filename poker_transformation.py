@@ -39,8 +39,8 @@ def list2list_list(poker_list, poker_dict):
     list_list = []
     result = []
     for key in poker_list:
-        result.append(key[1:])
         result.append(poker_dict[key])
+        result.append(key[1:])
         list_list.append(result)
         result = []
     return list_list

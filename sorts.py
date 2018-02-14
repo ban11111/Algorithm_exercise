@@ -1,3 +1,6 @@
+import random
+
+
 def flush(list_list):
     pass
 
@@ -42,16 +45,27 @@ def quick_sort2(lists, left, right):
     low = left
     high = right
     while left < right:
-        while left < right and lists[right][1] >= value[1]:
+        while left < right and lists[right][0] >= value[0]:
             right -= 1
         lists[left] = lists[right]
-        while left < right and lists[left][1] <= value[1]:
+        while left < right and lists[left][0] <= value[0]:
             left += 1
         lists[right] = lists[left]
     lists[right] = value
     quick_sort2(lists, low, left - 1)
     quick_sort2(lists, left + 1, high)
     return lists
+
+
+# 快速去重排序
+def qsort(l):
+    if len(l) < 2:
+        return l
+    pivot_element = random.choice(l)
+    small = [i for i in l if i[0] < pivot_element[0]]
+    # medium = [i for i in L if i==pivot_element]
+    large = [i for i in l if i[0] > pivot_element[0]]
+    return qsort(small) + [pivot_element] + qsort(large)
 
 
 def select_sort(lists):
