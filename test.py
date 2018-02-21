@@ -1,5 +1,5 @@
 import datetime as date
-import poker_classification as PC
+# import poker_classification as PC
 import sorts
 
 x = date.datetime(1993, 1, 1, 00, 00, 00)
@@ -14,12 +14,12 @@ y = date.datetime(1993, 1, 1, 23, 59, 59)
 # print(s, "\n", d[4])
 
 if __name__ == "__main__":
-    list_list = [[1, "j"], [2, "c"], [3, "l"], [2, "s"], [5, "c"], [6, "c"], [7, "s"], [8, "s"], [9, "s"]]
+    list_list = [[4, "j"], [2, "c"], [3, "l"], [2, "s"], [5, "c"], [7, "s"], [8, "s"], [9, "s"], [14, "f"]]
     maxnum = max(list_list)
-    s = sorts.qsort(list_list)
+    s = sorts.bubsort(list_list)
     print(s, "\n")
     # s = list_list.remove(maxnum)
     # print(list_list, s)
 
-    flag, m, mi = PC.class_flush(s)
-    print(flag, m, mi)
+    # flag, m, mi = PC.class_flush(s)
+    # print(flag, m, mi)

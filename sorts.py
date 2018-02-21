@@ -68,6 +68,33 @@ def qsort(l):
     return qsort(small) + [pivot_element] + qsort(large)
 
 
+def bubsort(l):
+    if max(l)[0] == 14:
+        m = [[1, max(l)[1]]]
+    else:
+    m = [min(l)]
+    if m[0][0] != 1:
+        l.remove(m[0])
+    while len(l) > 0:
+        for i in l:
+            if i[0] <= m[-1][0]:
+                l.remove(i)
+                break
+            if i[0] == m[-1][0] + 1:
+                l.remove(i)
+                m.append(i)
+                break
+            if i[0] > m[-1][0] + 1 and len(m) < 5:
+                m = [i]
+                break
+            if i[0] > m[-1][0] + 1 and len(m) >= 5:
+                l = []
+                break
+    if len(m) >= 5:
+        return m
+    else:
+        return []
+
 def select_sort(lists):
     # 选择排序
     count = len(lists)
