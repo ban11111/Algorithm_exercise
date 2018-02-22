@@ -4,6 +4,29 @@ import time
 day = datetime.timedelta(days=1)
 
 
+def GetSQSValue0(calculateyear):
+    answer = 0
+    startdate = datetime.datetime(calculateyear, 1, 1, 0, 0, 0)
+    while startdate.year == calculateyear:
+        daymonthlist = [int(startdate.month % 10), int(startdate.month / 10 % 10), int(startdate.day % 10),
+                        int(startdate.day / 10 % 10)]
+        tmplist = list(set(daymonthlist))
+        if len(tmplist) == 4:
+            for tmphour in range(0, 24):
+                tmphourlist = list(set(tmplist + [int(tmphour % 10), int(tmphour / 10 % 10)]))
+                if len(tmphourlist) == 6:
+                    for tmpmin in range(0, 60):
+                        tmpminlist = list(set(tmphourlist + [int(tmpmin % 10), int(tmpmin / 10 % 10)]))
+                        if len(tmpminlist) == 8:
+                            for tmpsec in range(0, 60):
+                                tmpseclist = list(set(tmpminlist + [int(tmpsec % 10), int(tmpsec / 10 % 10)]))
+                                if len(tmpseclist) == 10:
+                                    answer += 1
+        startdate += day
+    print(answer)
+    return answer
+
+
 def GetSQSValue(calculateyear):
     answer = 0
     # todo, split date
@@ -112,6 +135,7 @@ def GetSQSValue2(calculateyear):
     return answer
 
 
+# 第四种方法, 赢家!!!!!
 def GetSQSValue3(calculateyear):
     answer = 0
     for month in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]:
@@ -196,6 +220,11 @@ def GetSQSValue4(calculateyear):
 
 
 if __name__ == "__main__":
+    start = time.clock()
+    print("2003年的十全时总共有:", GetSQSValue0(2003), "个")
+    end = time.clock()
+    print("原始方法：%f秒" % (end - start))
+
     start = time.clock()
     print("2003年的十全时总共有:", GetSQSValue(2003), "个")
     end = time.clock()
