@@ -35,6 +35,7 @@ def list2dict_list(poker_list, poker_dict):
         result = {}
     return dict_list
 
+
 def list2list_list(poker_list, poker_dict):
     list_list = []
     result = []
@@ -44,6 +45,13 @@ def list2list_list(poker_list, poker_dict):
         list_list.append(result)
         result = []
     return list_list
+
+
+def list_list2num_list(list_list):
+    num_list = []
+    for i in list_list:
+        num_list.append(i[0])
+    return num_list
 
 
 if __name__ == "__main__":
