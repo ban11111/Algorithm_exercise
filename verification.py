@@ -9,10 +9,10 @@ def check_result(file1, file2):
     answer1 = results1["matches"]
     answer2 = results2["matches"]
 
-    for i in range(0, 10000):
+    for i in range(0, len(answer1)):
         if answer1[i]["result"] != answer2[i]["result"]:
             fail = True
-            print("第%d个不对" % i)
+            print("第%d个不对" % (i + 1))
 
     if fail:
         print("你完了, 你答案错了!!!")

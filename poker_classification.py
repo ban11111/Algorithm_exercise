@@ -1,6 +1,7 @@
 import poker_transformation as pt
 
 
+# 分类
 def rank_classify(list_list):
     c = rank_color(list_list)
     if c:
@@ -121,8 +122,8 @@ def rank_level(l):
             whole += [tmp]
             flush = [tmp] if len(l) >= 4 else flush
 
-    print("======WHOLE!!!!!!!", whole)
-    print("======flush=======", flush)
+    # print("======WHOLE!!!!!!!", whole)
+    # print("======flush=======", flush)
     if multi4:
         x = set(whole + l)
         x.remove(multi4[0])

@@ -10,7 +10,6 @@ if __name__ == "__main__":
     start = time.clock()
 
     data = pt.file2json("./jsonfiles/seven_cards.json")
-
     match = data["matches"]
     flag = 1
 
@@ -31,7 +30,6 @@ if __name__ == "__main__":
     start = time.clock()
 
     data = pt.file2json("./jsonfiles/match.json")
-
     match = data["matches"]
     flag = 1
 

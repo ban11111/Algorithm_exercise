@@ -2,6 +2,7 @@ import poker_transformation as pt
 import poker_classification as pc
 
 
+# 比较大小
 def compare(line):
     alice = pt.str2list_list(line["alice"])
     bob = pt.str2list_list(line["bob"])
