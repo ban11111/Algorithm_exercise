@@ -42,7 +42,7 @@ def rank_color_flush(l):
 
 # 带花色的列表
 def rank_color(l):
-    c, h, d, s = [], [], [], []
+    c, h, d, s, n = [], [], [], [], []
     for i in l:
         if i[1] == "c":
             c.append(i)
@@ -52,14 +52,16 @@ def rank_color(l):
             d.append(i)
         if i[1] == "s":
             s.append(i)
+        if i[1] == "n":
+            n.append(i)
     if len(c) >= 5:
-        return c
+        return pt.list_list2num_list(c + n)
     if len(h) >= 5:
-        return h
+        return pt.list_list2num_list(h + n)
     if len(d) >= 5:
-        return d
+        return pt.list_list2num_list(d + n)
     if len(s) >= 5:
-        return s
+        return pt.list_list2num_list(s + n)
     return
 
 
