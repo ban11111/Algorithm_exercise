@@ -1,26 +1,27 @@
 # coding: utf-8
-import poker_dict as PD
+
 import time
-import sorts
-import poker_transformation as PT
+import poker_transformation as pt
+import poker_comparison as cmp
 
-
-pokerDicts = PD.PokerDicts()
-pokerDict = pokerDicts.pokerDict
-numDict = pokerDicts.numDict
 
 if __name__ == "__main__":
     start = time.clock()
 
-    data = PT.file2json("./jsonfiles/seven_cards.json")
+    data = pt.file2json("./jsonfiles/seven_cards.json")
 
     firstMatch = data["matches"]
+    flag = 1
+
     for i in firstMatch:
-        a = i["alice"]
-        alice = PT.str2list(a)
-        # print(numDict, "\n", pokerDict)
-        # alice_dict = PT.list2dict(alice, pokerDict)
-        d = PT.list2dict_list(alice, pokerDict)
-        s = sorts.quick_sort(d, 0, len(d) - 1)
+        try:
+            result = cmp.compare(i)
+        except Exception as e:
+            print("第%s行出错, err: %s" % (flag, e))
+        else:
+            i["result"] = result
+        flag += 1
+    pt.json2file(data, "seven_cards.my.json")
+
     end = time.clock()
     print("%f秒" % (end - start))

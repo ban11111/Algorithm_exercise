@@ -1,5 +1,6 @@
 class PokerDicts:
-    pokerDict, numDict = {}, {}
+    numDict = {}
+    pokerDict = {}
 
     def __init__(self):
         for i in range(2, 10):
@@ -11,7 +12,14 @@ class PokerDicts:
         self.numDict["A"] = 14
         self.numDict["X"] = -1
 
-        for i in ["s", "h", "d", "c"]:
-            for key, value in self.numDict.items():
-                self.pokerDict[key + i] = value
-        self.pokerDict["Xn"] = -1
+        # for i in ["s", "h", "d", "c"]:
+        #     for key, value in self.numDict.items():
+        #         self.pokerDict[key + i] = value
+        # self.pokerDict["Xn"] = -1
+        # 废弃, 不需要
+
+
+if __name__ == "__main__":
+    test = PokerDicts()
+    print(test.pokerDict)
+    print(test.numDict)

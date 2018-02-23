@@ -1,16 +1,25 @@
-import json
-import poker_dict as PD
+import json, os
+import poker_dict as pd
 
-pokerDicts = PD.PokerDicts()
+pokerDicts = pd.PokerDicts()
 pokerDict = pokerDicts.pokerDict
 numDict = pokerDicts.numDict
 
 
+# 读取json文件
 def file2json(path):
     with open(path, "r") as file:
         return json.load(file)
 
 
+# 结果写入文件
+def json2file(content, filename):
+    path = "./results/"
+    with open(path + filename, "w") as file:
+        file.write(json.dumps(content))
+
+
+# 字符串 转 str_list
 def str2list(string):
     str_list = []
     for i in range(0, len(string)):
@@ -19,6 +28,34 @@ def str2list(string):
     return str_list
 
 
+# 字符串 转 list_list
+def str2list_list(string):
+    list_list = []
+    for i in str2list(string):
+        list_list.append([numDict[i[0]], i[1]])
+    return list_list
+
+
+# list_list 转 数字list
+def list_list2num_list(list_list):
+    num_list = []
+    for i in list_list:
+        num_list.append(i[0])
+    return num_list
+
+
+# 测试一下
+if __name__ == "__main__":
+    data = file2json("./jsonfiles/seven_cards.json")
+    firstMatch = data["matches"][0]
+    print(firstMatch)
+    li_li = str2list_list(firstMatch["alice"])
+    print(li_li)
+    li = list_list2num_list(li_li)
+    print(li)
+
+
+# **************  下面的方法暂不需要  ****************
 def list2dict(poker_list, poker_dict):
     result = {}
     for value in poker_list:
@@ -45,30 +82,3 @@ def list2list_list(poker_list, poker_dict):
         list_list.append(result)
         result = []
     return list_list
-
-
-def list_list2num_list(list_list):
-    num_list = []
-    for i in list_list:
-        num_list.append(i[0])
-    return num_list
-
-
-if __name__ == "__main__":
-    data = file2json("./jsonfiles/seven_cards.json")
-    firstMatch = data["matches"][0]
-    print(firstMatch)
-    a = firstMatch["alice"]
-    alice = str2list(a)
-    print(alice)
-    alice_dict = list2dict(alice, pokerDict)
-    print(alice_dict)
-
-    x = sorted(alice_dict.values())
-    print(x)
-
-    y = list2dict_list(alice, pokerDict)
-    print(y)
-
-    z = list2list_list(alice, pokerDict)
-    print(z)
