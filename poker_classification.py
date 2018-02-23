@@ -69,7 +69,7 @@ def rank_level(l):
     # count 用于标示以及计算重复牌数量, 0 表示第一次遇到重复牌, 1 表示之后遇到重复牌, 2 及以上表示重复牌的数量
     count = 0
     multi2, multi22, multi3, multi4, whole = [], [], [], [], []            # multi 用于存储重复牌, whole 用于存储去重后所有牌
-    flush = [max(l)]
+    flush, whole = [max(l)], [max(l)]
 
     if flush[0] == 14:
         l.append(1)
@@ -79,7 +79,7 @@ def rank_level(l):
         tmp = max(l)
         l.remove(tmp)
 
-        if tmp == flush[-1]:
+        if tmp == whole[-1]:
 
             if count == 0:
                 count = l.count(tmp) + 2
@@ -108,10 +108,10 @@ def rank_level(l):
                     break
             continue
 
-        if tmp < flush[-1] and count != 0:
+        if tmp < whole[-1] and count > 1:
             count = 1
 
-        if tmp == flush[-1] - 1 and len(l) > 0:
+        if tmp == flush[-1] - 1:
             whole += [tmp]
             flush.append(tmp)
             continue
@@ -119,32 +119,33 @@ def rank_level(l):
         # whole变量用于保存 "排序 并 去重" 后的列表
         if tmp < flush[-1] - 1:
             whole += [tmp]
-            flush = [tmp]
-            continue
+            flush = [tmp] if len(l) >= 4 else flush
 
-    # print("======WHOLE!!!!!!!", whole)
+    print("======WHOLE!!!!!!!", whole)
+    print("======flush=======", flush)
     if multi4:
-        x = set(whole + flush)
+        x = set(whole + l)
         x.remove(multi4[0])
         return 8, multi4 + sorted(x, reverse=True)[:1]
 
     if multi3 and multi2:
         return 7, multi3 + multi2
 
-    if len(flush) == 5:
-        return 5, flush
+    if len(flush) >= 5:
+        return 5, flush[:5]
 
-    if multi3 and not multi2:
-        # whole.remove(multi3[0])
+    if multi3:
+        whole.remove(multi3[0])
         return 4, multi3 + whole[:2]
 
     if multi2 and multi22:
-        # whole.remove(multi2[0])
-        # whole.remove(multi22[0])
+        whole.remove(multi2[0])
+        whole.remove(multi22[0])
         return 3, multi2 + multi22 + whole[:1]
 
-    if multi2 and not multi22:
-        # whole.remove(multi2[0])
+    if multi2:
+        # print("rank2", whole)
+        whole.remove(multi2[0])
         return 2, multi2 + whole[:3]
 
     if not multi2:

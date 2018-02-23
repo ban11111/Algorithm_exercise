@@ -1,4 +1,4 @@
-import json, os
+import json
 import poker_dict as pd
 
 pokerDicts = pd.PokerDicts()
@@ -16,7 +16,8 @@ def file2json(path):
 def json2file(content, filename):
     path = "./results/"
     with open(path + filename, "w") as file:
-        file.write(json.dumps(content))
+        file.write(json.dumps(content, sort_keys=True))
+        # json.dump(content, file)
 
 
 # 字符串 转 str_list
