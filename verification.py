@@ -1,6 +1,7 @@
 import poker_transformation as pt
 
 
+# 检测答案是否正确
 def check_result(jsonfile, myfile):
     fail = False
     results1 = pt.file2json(jsonfile)
@@ -18,7 +19,7 @@ def check_result(jsonfile, myfile):
         print("你完了, 你答案错了!!!")
     else:
         print("恭喜恭喜,答案全对!!!")
-    return not fail
+    # return not fail
 
 
 if __name__ == "__main__":
