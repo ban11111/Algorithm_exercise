@@ -9,7 +9,7 @@ def compare(line):
     arank, alist = pc.rank_classify(alice)
     brank, blist = pc.rank_classify(bob)
 
-    # print(arank, brank)
+    print(arank, brank)
     if arank > brank:
         return 1
     elif arank < brank:
@@ -30,7 +30,10 @@ def compare(line):
 if __name__ == "__main__":
     ghost = []
     ghost.append({"alice": "3s4s5s2sXn", "bob": "7s2s5s4s3sXn", "result": 0})
+    ghost.append({"alice":"9sTcXnKh4d7hJs","bob":"7sQh9sTcXnKh4d","result":0})
 
-    for i in ghost:
-        r = compare(i)
-        print(r)
+    # for i in ghost:
+    #     r = compare(i)
+    #     print(r)
+    r = compare(ghost[1])
+    print(r)

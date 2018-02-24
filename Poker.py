@@ -6,11 +6,7 @@ import poker_comparison as cmp
 import verification as vf
 
 
-logging.basicConfig(filename='err.log', level=logging.DEBUG)
-
-
 def poker(file_in, file_out):
-
     start = time.clock()   # 开始时间
 
     data = pt.file2json(pt.path + file_in)
@@ -34,6 +30,7 @@ def poker(file_in, file_out):
 
 if __name__ == "__main__":
     os.remove("./err.log")
+    logging.basicConfig(filename='err.log', level=logging.DEBUG)
     # 7张牌 无赖子
     poker("seven_cards.json", "seven_cards.my.json")
     vf.check_result(pt.path + "seven_cards.result.json", pt.my_path + "seven_cards.my.json")
@@ -42,4 +39,5 @@ if __name__ == "__main__":
     vf.check_result(pt.path + "result.json", pt.my_path + "five_cards.my.json")
     # 7张牌 有赖子
     poker("seven_cards_with_ghost.json", "seven_ghost.my.json")
+    vf.check_result(pt.path + "seven_cards_with_ghost.result.json", pt.my_path + "seven_ghost.my.json")
     # 5张牌 有赖子 todo

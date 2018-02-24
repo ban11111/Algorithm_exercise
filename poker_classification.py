@@ -2,15 +2,18 @@ import poker_transformation as pt
 
 
 # 常量
-
+StraightFlush, FourOfAKind, FullHouse, Flush, Straight, ThreeOfAKind, TwoPairs, OnePair, NoHand = \
+    (9, 8, 7, 6, 5, 4, 3, 2, 1)
+Ghost = -1  # -1 代表 赖子
 
 
 # 分类
 def rank_classify(list_list):
-    c = rank_color(list_list)
-    if len(c) >= 5:
-        if -1 not in c:
-            crank = rank_color_flush(c)
+    # 首先判断是否同花
+    c = rank_flush(list_list)
+    if len(c) >= 5:  # 如果是同花
+        if -1 not in c:  # 没有赖子
+            crank = rank_straight_flush(c)
             if crank[0] == 9:
                 return crank
             else:
@@ -20,8 +23,8 @@ def rank_classify(list_list):
                 else:
                     return crank
 
-        elif -1 in c:
-            crank = rank_color_flush_with_ghost(c)
+        elif -1 in c:  # 如果有赖子
+            crank = rank_straight_flush_with_ghost(c)
             if crank[0] == 9:
                 return crank
             else:
@@ -30,7 +33,7 @@ def rank_classify(list_list):
                     return rank
                 else:
                     return crank
-    else:
+    else:  # 如果不是同花
         if c[0] == 0:
             return rank_level(pt.list_list2num_list(list_list))
         else:
@@ -38,7 +41,7 @@ def rank_classify(list_list):
 
 
 # 带花色的列表
-def rank_color(l):
+def rank_flush(l):
     c, h, d, s, n = [], [], [], [], []
     for i in l:
         if i[1] == "c":
@@ -65,7 +68,7 @@ def rank_color(l):
 
 
 # 同花的列表
-def rank_color_flush(l):
+def rank_straight_flush(l):
     original = l.copy()
     flush = [max(l)]
     if flush[0] == 14:
@@ -87,7 +90,7 @@ def rank_color_flush(l):
 
 
 # 同花列表, 带赖子, 值-1 代表赖子 todo, 同花中,赖子是否可以变成 "已有的牌" 中相同的一张牌? 目前做法时不能.
-def rank_color_flush_with_ghost(l):
+def rank_straight_flush_with_ghost(l):
     # 分别记录赖子在顺子里的值 以及 最大的可能值
     flush_index, max_index = 14, 14
 
@@ -97,7 +100,7 @@ def rank_color_flush_with_ghost(l):
         l.append(1)
         flush_index, max_index = 13, 13
     else:
-        flush[0] = -1
+        flush[0] = Ghost
     l.remove(flush[0])
 
     tmp = max(l)
@@ -111,30 +114,31 @@ def rank_color_flush_with_ghost(l):
         l.remove(tmp)
 
         # 根据flush最后一位 是否是 赖子, 来分别判断.
-        if flush[-1] != -1:
+        if flush[-1] != Ghost:
             if tmp == flush[-1]:
                 continue
 
             if tmp == flush[-1] - 1:
                 flush.append(tmp)
-                max_index -= 1 if flush[0] == max(original) or flush[0] != -1 else 0
+                max_index -= 1 if flush[0] == max(original) or flush[0] != Ghost else 0
                 continue
             # 如果tmp 与 flush 相隔 一位
             if tmp == flush[-1] - 2:
-                if len(l) > 0 and l[-1] == -1:  # 如果赖子还未使用
+                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
                 flush_index = tmp + 1
-                flush = flush[flush.index(-1) + 1:] + [-1, tmp]
+                flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in flush else flush + [Ghost, tmp]
                 continue
             # 如果tmp 与 flush 相隔 超过一位
             if tmp < flush[-1] - 2:
-                if len(l) > 0 and l[-1] == -1:  # 如果赖子还未使用
+                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                flush_index = tmp + 1
-                flush = [-1, tmp]
+                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    flush_index = tmp + 1
+                    flush = [Ghost, tmp]
                 continue
 
-        if flush[-1] == -1:
+        if flush[-1] == Ghost:
             # 如果tmp 与 赖子的值 相等, 赖子值-1
             if tmp == flush_index:
                 flush_index -= 1
@@ -143,26 +147,27 @@ def rank_color_flush_with_ghost(l):
 
             if tmp == flush_index - 1:
                 flush.append(tmp)
-                max_index -= 1 if flush[0] == max(original) and flush[0] != -1 else 0
+                max_index -= 1 if flush[0] == max(original) and flush[0] != Ghost else 0
                 continue
 
             # 如果tmp 与 赖子的值 相隔 一位
             if tmp == flush_index - 2:
                 flush_index = tmp + 1
-                flush = flush[flush.index(-1) + 1:] + [-1, tmp]
+                flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp]
                 continue
 
             # 如果tmp 与 赖子的值 相隔 超过一位
             if tmp < flush_index - 2:
                 l.pop()
-                flush_index = tmp + 1
-                flush = [-1, tmp]
+                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    flush_index = tmp + 1
+                    flush = [Ghost, tmp]
                 continue
 
     if len(flush) < 5:
         original.append(max_index)
         return 6, sorted(original, reverse=True)[:5]
-    flush[flush.index(-1)] = flush_index
+    flush[flush.index(Ghost)] = flush_index
     return 9, flush[:5]
 
 
@@ -223,7 +228,7 @@ def rank_level(l):
         # whole变量用于保存 "排序 并 去重" 后的列表
         if tmp < flush[-1] - 1:
             whole += [tmp]
-            flush = [tmp] if len(l) >= 4 else flush
+            flush = [tmp] if len(flush) < 5 else flush
 
     # print("======WHOLE!!!!!!!", whole)
     # print("======flush=======", flush)
@@ -258,8 +263,8 @@ def rank_level(l):
 
 # 带赖子, 判断牌型
 def rank_level_with_ghost(l):
-    l.remove(-1)
-    l.append(-1)
+    l.remove(Ghost)
+    l.append(Ghost)
     # 记录赖子在顺子里的值
     flush_index = 14
 
@@ -269,10 +274,10 @@ def rank_level_with_ghost(l):
     flush, whole = [max(l)], [max(l)]
 
     if flush[0] == 14:
-        l.append(1)
+        l.insert(-1, 1)
         flush_index = 13
     else:
-        flush[0] = -1
+        flush[0], whole[0] = Ghost, Ghost
     l.remove(flush[0])
 
     tmp = max(l)
@@ -286,7 +291,6 @@ def rank_level_with_ghost(l):
         l.remove(tmp)
 
         if tmp == whole[-1]:
-
             if count == 0:
                 count = l.count(tmp) + 2
                 if count == 2:
@@ -317,7 +321,7 @@ def rank_level_with_ghost(l):
         if tmp < whole[-1] and count > 1:
             count = 1
 
-        if flush[-1] != -1:
+        if flush[-1] != Ghost:
             if tmp == flush[-1] - 1:
                 whole += [tmp]
                 flush.append(tmp)
@@ -326,19 +330,21 @@ def rank_level_with_ghost(l):
             # 如果tmp 与 flush 相隔 一位
             if tmp == flush[-1] - 2:
                 whole += [tmp]
-                if len(l) > 0 and l[-1] == -1:  # 如果赖子还未使用
+                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                flush_index = tmp + 1
-                flush = flush[flush.index(-1) + 1:] + [-1, tmp]
+                if len(flush) < 5:
+                    flush_index = tmp + 1
+                    flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in flush else flush + [Ghost, tmp]
                 continue
 
             # 如果tmp 与 flush 相隔 超过一位
             if tmp < flush[-1] - 2:
                 whole += [tmp]
-                if len(l) > 0 and l[-1] == -1:  # 如果赖子还未使用
+                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                flush_index = tmp + 1
-                flush = [-1, tmp]
+                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    flush_index = tmp + 1
+                    flush = [Ghost, tmp]
                 continue
 
             # whole变量用于保存 "排序 并 去重" 后的列表
@@ -346,7 +352,7 @@ def rank_level_with_ghost(l):
             #     whole += [tmp]
             #     flush = [tmp] if len(l) >= 4 else flush
 
-        elif flush[-1] == -1:
+        elif flush[-1] == Ghost:
             if tmp == flush_index - 1:
                 whole += [tmp]
                 flush.append(tmp)
@@ -355,15 +361,17 @@ def rank_level_with_ghost(l):
             # 如果tmp 与 flush 相隔 一位
             if tmp == flush_index - 2:
                 whole += [tmp]
-                flush_index = tmp + 1
-                flush = flush[flush.index(-1) + 1:] + [-1, tmp]
+                if len(flush) < 5:
+                    flush_index = tmp + 1
+                    flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp]
                 continue
 
             # 如果tmp 与 flush 相隔 超过一位
             if tmp < flush_index - 2:
                 whole += [tmp]
-                flush_index = tmp + 1
-                flush = [-1, tmp]
+                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    flush_index = tmp + 1
+                    flush = [Ghost, tmp]
                 continue
 
             # if tmp < flush_index - 1:
@@ -372,17 +380,15 @@ def rank_level_with_ghost(l):
 
     # print("======WHOLE!!!!!!!", whole)
     # print("======flush=======", flush)
+    if Ghost in whole:
+        whole.remove(Ghost)
     if multi4:
         return 8, multi4 + [13] if multi4[0] == 14 else [14]
 
     if multi3 and multi2:
         x = set(whole + l)
         x.remove(multi3[0])
-        return 7, multi3 + [multi3[0], max(x)]
-
-    if len(flush) >= 5:
-        flush[flush.index(-1)] = flush_index
-        return 5, flush[:5]
+        return 8, multi3 + [multi3[0], max(x)]
 
     if multi3:
         whole.remove(multi3[0])
@@ -393,8 +399,13 @@ def rank_level_with_ghost(l):
         whole.remove(multi22[0])
         return 7, multi2 + [multi2[0]] + multi22
 
+    if len(flush) >= 5:
+        if Ghost in flush:
+            flush[flush.index(Ghost)] = flush_index
+            print(flush)
+        return 5, flush[:5]
+
     if multi2:
-        # print("rank2", whole)
         whole.remove(multi2[0])
         return 4, multi2 + [multi2[0]] + whole[:2]
 
