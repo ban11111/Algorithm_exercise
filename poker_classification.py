@@ -22,18 +22,18 @@ def rank_classify(list_list):
 def rank_color_flush(l):
     original = l.copy()
     flush = [max(l)]
-    if flush[0][0] == 14:
-        l.append([1, flush[0][1]])
+    if flush[0] == 14:
+        l.append(1)
     l.remove(flush[0])
     while len(flush) < 5:
         tmp = max(l)
         l.remove(tmp)
-        if tmp[0] == flush[-1][0]:
+        if tmp == flush[-1]:
             continue
-        if tmp[0] == flush[-1][0] - 1:
+        if tmp == flush[-1] - 1:
             flush.append(tmp)
             continue
-        if tmp[0] < flush[-1][0] - 1 and len(l) >= 4:
+        if tmp < flush[-1] - 1 and len(l) >= 4:
             flush = [tmp]
             continue
         return 6, sorted(original, reverse=True)[:5]

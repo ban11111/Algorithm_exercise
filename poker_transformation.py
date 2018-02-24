@@ -5,17 +5,19 @@ pokerDicts = pd.PokerDicts()
 pokerDict = pokerDicts.pokerDict
 numDict = pokerDicts.numDict
 
+my_path = "./results/"
+path = "./json_files/"
+
 
 # 读取json文件
-def file2json(path):
-    with open(path, "r") as file:
+def file2json(file_path):
+    with open(file_path, "r") as file:
         return json.load(file)
 
 
 # 结果写入文件
-def json2file(content, filename):
-    path = "./results/"
-    with open(path + filename, "w") as file:
+def json2file(content, file_path):
+    with open(file_path, "w") as file:
         file.write(json.dumps(content, sort_keys=True))
         # json.dump(content, file)
 
@@ -47,7 +49,7 @@ def list_list2num_list(list_list):
 
 # 测试一下
 if __name__ == "__main__":
-    data = file2json("./jsonfiles/seven_cards.json")
+    data = file2json(path + "seven_cards.json")
     firstMatch = data["matches"][0]
     print(firstMatch)
     li_li = str2list_list(firstMatch["alice"])

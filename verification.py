@@ -1,10 +1,10 @@
 import poker_transformation as pt
 
 
-def check_result(file1, file2):
+def check_result(jsonfile, myfile):
     fail = False
-    results1 = pt.file2json(file1)
-    results2 = pt.file2json(file2)
+    results1 = pt.file2json(jsonfile)
+    results2 = pt.file2json(myfile)
 
     answer1 = results1["matches"]
     answer2 = results2["matches"]
@@ -23,7 +23,7 @@ def check_result(file1, file2):
 
 if __name__ == "__main__":
     # 7 cards
-    check_result("./jsonfiles/seven_cards.result.json", "./results/seven_cards.my.json")
+    check_result("./json_files/seven_cards.result.json", "./results/seven_cards.my.json")
 
     # 5 cards
-    check_result("./jsonfiles/result.json", "./results/five_cards.my.json")
+    check_result("./json_files/result.json", "./results/five_cards.my.json")
