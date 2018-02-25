@@ -16,9 +16,9 @@ def check_result(jsonfile, myfile):
             print("第%d个不对" % (i + 1))
 
     if fail:
-        print("你完了, 你答案错了!!!")
+        print("你完了, 你答案错了!!!\n")
     else:
-        print("恭喜恭喜,答案全对!!!")
+        print("恭喜恭喜,答案全对!!!\n")
     # return not fail
 
 

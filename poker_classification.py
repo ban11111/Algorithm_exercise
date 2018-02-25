@@ -36,11 +36,11 @@ def rank_classify(list_list):
     else:  # 如果不是同花
         if c[0] == 0:
             return rank_level(pt.list_list2num_list(list_list))
-        else:
+        else:  # 如果有赖子
             return rank_level_with_ghost(pt.list_list2num_list(list_list))
 
 
-# 带花色的列表
+# 传入带花色的列表， 判断是否同花，并返回不带花色的列表。
 def rank_flush(l):
     c, h, d, s, n = [], [], [], [], []
     for i in l:
@@ -67,108 +67,111 @@ def rank_flush(l):
     return [0]
 
 
-# 同花的列表
+# 传入同花的列表， 判断是否是同花顺
 def rank_straight_flush(l):
     original = l.copy()
-    flush = [max(l)]
-    if flush[0] == 14:
+    straight = [max(l)]
+    if straight[0] == 14:
         l.append(1)
-    l.remove(flush[0])
-    while len(flush) < 5:
+    l.remove(straight[0])
+    while len(straight) < 5:
         tmp = max(l)
         l.remove(tmp)
-        if tmp == flush[-1]:
+        if tmp == straight[-1]:
             continue
-        if tmp == flush[-1] - 1:
-            flush.append(tmp)
+        if tmp == straight[-1] - 1:
+            straight.append(tmp)
             continue
-        if tmp < flush[-1] - 1 and len(l) >= 4:
-            flush = [tmp]
+        if tmp < straight[-1] - 1 and len(l) >= 4:
+            straight = [tmp]
             continue
         return 6, sorted(original, reverse=True)[:5]
-    return 9, flush
+    return 9, straight
 
 
-# 同花列表, 带赖子, 值-1 代表赖子 todo, 同花中,赖子是否可以变成 "已有的牌" 中相同的一张牌? 目前做法时不能.
+# 同花列表, 带赖子, 值-1 代表赖子 todo, 同花中,赖子是否可以变成 "已有的牌" 中相同的一张牌? 目前做法是不能.
 def rank_straight_flush_with_ghost(l):
     # 分别记录赖子在顺子里的值 以及 最大的可能值
-    flush_index, max_index = 14, 14
+    straight_index, max_index = 14, 14
 
     original = l.copy()
-    flush = [max(l)]
-    if flush[0] == 14:
+    straight = [max(l)]
+    if straight[0] == 14:
         l.append(1)
-        flush_index, max_index = 13, 13
+        straight_index, max_index = 13, 13
     else:
-        flush[0] = Ghost
-    l.remove(flush[0])
+        straight[0] = Ghost
+    l.remove(straight[0])
 
     tmp = max(l)
-    if flush_index > tmp:
-        flush_index = tmp + 1
-    if flush_index == tmp:
-        flush_index -= 1
+    if straight_index > tmp:
+        straight_index = tmp + 1
+    if straight_index == tmp:
+        straight_index -= 1
 
     while len(l) > 0:
         tmp = max(l)
         l.remove(tmp)
 
-        # 根据flush最后一位 是否是 赖子, 来分别判断.
-        if flush[-1] != Ghost:
-            if tmp == flush[-1]:
+        # 根据straight最后一位 是否是 赖子, 来分别判断.
+        if straight[-1] != Ghost:
+            if tmp == straight[-1]:
                 continue
 
-            if tmp == flush[-1] - 1:
-                flush.append(tmp)
-                max_index -= 1 if flush[0] == max(original) or flush[0] != Ghost else 0
+            if tmp == straight[-1] - 1:
+                straight.append(tmp)
+                max_index -= 1 if straight[0] == 14 else 0
                 continue
-            # 如果tmp 与 flush 相隔 一位
-            if tmp == flush[-1] - 2:
+            # 如果tmp 与 straight 相隔 一位
+            if tmp == straight[-1] - 2:
                 if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                flush_index = tmp + 1
-                flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in flush else flush + [Ghost, tmp]
+                straight_index = tmp + 1
+                straight = straight[straight.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in straight else \
+                    straight + [Ghost, tmp]
                 continue
-            # 如果tmp 与 flush 相隔 超过一位
-            if tmp < flush[-1] - 2:
+            # 如果tmp 与 straight 相隔 超过一位
+            if tmp < straight[-1] - 2:
                 if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
-                    flush_index = tmp + 1
-                    flush = [Ghost, tmp]
-                continue
+                if len(straight) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    straight_index = tmp + 1
+                    straight = [Ghost, tmp]
+                    continue
+                break
 
-        if flush[-1] == Ghost:
+        if straight[-1] == Ghost:
             # 如果tmp 与 赖子的值 相等, 赖子值-1
-            if tmp == flush_index:
-                flush_index -= 1
-                flush.insert(-1, tmp)
+            if tmp == straight_index:
+                straight_index -= 1
+                straight.insert(-1, tmp)
                 continue
 
-            if tmp == flush_index - 1:
-                flush.append(tmp)
-                max_index -= 1 if flush[0] == max(original) and flush[0] != Ghost else 0
+            if tmp == straight_index - 1:
+                straight.append(tmp)
+                max_index -= 1 if straight[0] == 14 else 0
                 continue
 
             # 如果tmp 与 赖子的值 相隔 一位
-            if tmp == flush_index - 2:
-                flush_index = tmp + 1
-                flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp]
+            if tmp == straight_index - 2:
+                straight_index = tmp + 1
+                straight = straight[straight.index(Ghost) + 1:] + [Ghost, tmp]
                 continue
 
             # 如果tmp 与 赖子的值 相隔 超过一位
-            if tmp < flush_index - 2:
+            if tmp < straight_index - 2:
                 l.pop()
-                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
-                    flush_index = tmp + 1
-                    flush = [Ghost, tmp]
-                continue
+                if len(straight) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    straight_index = tmp + 1
+                    straight = [Ghost, tmp]
+                    continue
+                break
 
-    if len(flush) < 5:
+    if len(straight) < 5:
         original.append(max_index)
         return 6, sorted(original, reverse=True)[:5]
-    flush[flush.index(Ghost)] = flush_index
-    return 9, flush[:5]
+    straight[straight.index(Ghost)] = straight_index
+    return 9, straight[:5]
 
 
 # 不带花色的列表
@@ -178,11 +181,11 @@ def rank_level(l):
     # count 用于标示以及计算重复牌数量, 0 表示第一次遇到重复牌, 1 表示之后遇到重复牌, 2 及以上表示重复牌的数量
     count = 0
     multi2, multi22, multi3, multi4, whole = [], [], [], [], []            # multi 用于存储重复牌, whole 用于存储去重后所有牌
-    flush, whole = [max(l)], [max(l)]
+    straight, whole = [max(l)], [max(l)]
 
-    if flush[0] == 14:
+    if straight[0] == 14:
         l.append(1)
-    l.remove(flush[0])
+    l.remove(straight[0])
 
     while len(l) > 0:
         tmp = max(l)
@@ -220,18 +223,18 @@ def rank_level(l):
         if tmp < whole[-1] and count > 1:
             count = 1
 
-        if tmp == flush[-1] - 1:
+        if tmp == straight[-1] - 1:
             whole += [tmp]
-            flush.append(tmp)
+            straight.append(tmp)
             continue
 
         # whole变量用于保存 "排序 并 去重" 后的列表
-        if tmp < flush[-1] - 1:
+        if tmp < straight[-1] - 1:
             whole += [tmp]
-            flush = [tmp] if len(flush) < 5 else flush
+            straight = [tmp] if len(straight) < 5 else straight
 
     # print("======WHOLE!!!!!!!", whole)
-    # print("======flush=======", flush)
+    # print("======straight=======", straight)
     if multi4:
         x = set(whole + l)
         x.remove(multi4[0])
@@ -240,8 +243,8 @@ def rank_level(l):
     if multi3 and multi2:
         return 7, multi3 + multi2
 
-    if len(flush) >= 5:
-        return 5, flush[:5]
+    if len(straight) >= 5:
+        return 5, straight[:5]
 
     if multi3:
         whole.remove(multi3[0])
@@ -266,25 +269,25 @@ def rank_level_with_ghost(l):
     l.remove(Ghost)
     l.append(Ghost)
     # 记录赖子在顺子里的值
-    flush_index = 14
+    straight_index = 14
 
     # count 用于标示以及计算重复牌数量, 0 表示第一次遇到重复牌, 1 表示之后遇到重复牌, 2 及以上表示重复牌的数量
     count = 0
     multi2, multi22, multi3, multi4, whole = [], [], [], [], []  # multi 用于存储重复牌, whole 用于存储去重后所有牌
-    flush, whole = [max(l)], [max(l)]
+    straight, whole = [max(l)], [max(l)]
 
-    if flush[0] == 14:
+    if straight[0] == 14:
         l.insert(-1, 1)
-        flush_index = 13
+        straight_index = 13
     else:
-        flush[0], whole[0] = Ghost, Ghost
-    l.remove(flush[0])
+        straight[0], whole[0] = Ghost, Ghost
+    l.remove(straight[0])
 
     tmp = max(l)
-    if flush_index > tmp:
-        flush_index = tmp + 1
-    if flush_index == tmp:
-        flush_index -= 1
+    if straight_index > tmp:
+        straight_index = tmp + 1
+    if straight_index == tmp:
+        straight_index -= 1
 
     while len(l) > 0:
         tmp = max(l)
@@ -321,65 +324,65 @@ def rank_level_with_ghost(l):
         if tmp < whole[-1] and count > 1:
             count = 1
 
-        if flush[-1] != Ghost:
-            if tmp == flush[-1] - 1:
+        if straight[-1] != Ghost:
+            if tmp == straight[-1] - 1:
                 whole += [tmp]
-                flush.append(tmp)
+                straight.append(tmp)
                 continue
 
-            # 如果tmp 与 flush 相隔 一位
-            if tmp == flush[-1] - 2:
-                whole += [tmp]
-                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
-                    l.pop()
-                if len(flush) < 5:
-                    flush_index = tmp + 1
-                    flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in flush else flush + [Ghost, tmp]
-                continue
-
-            # 如果tmp 与 flush 相隔 超过一位
-            if tmp < flush[-1] - 2:
+            # 如果tmp 与 straight 相隔 一位
+            if tmp == straight[-1] - 2:
                 whole += [tmp]
                 if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
                     l.pop()
-                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
-                    flush_index = tmp + 1
-                    flush = [Ghost, tmp]
+                if len(straight) < 5:
+                    straight_index = tmp + 1
+                    straight = straight[straight.index(Ghost) + 1:] + [Ghost, tmp] if Ghost in straight else \
+                        straight + [Ghost, tmp]
                 continue
 
-            # whole变量用于保存 "排序 并 去重" 后的列表
-            # if tmp < flush[-1] - 1:
+            # 如果tmp 与 straight 相隔 超过一位
+            if tmp < straight[-1] - 2:
+                whole += [tmp]
+                if len(l) > 0 and l[-1] == Ghost:  # 如果赖子还未使用
+                    l.pop()
+                if len(straight) == 4 and Ghost not in straight:  # 如果遍历到的顺子长度为4, 并且赖子未使用，则直接将赖子放到第5位
+                    straight_index = straight[3] - 1
+                    straight.append(Ghost)
+                    continue
+                if len(straight) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    straight_index = tmp + 1
+                    straight = [Ghost, tmp]
+                    continue
+
+        elif straight[-1] == Ghost:
+            if tmp == straight_index - 1:
+                whole += [tmp]
+                straight.append(tmp)
+                continue
+
+            # 如果tmp 与 straight 相隔 一位
+            if tmp == straight_index - 2:
+                whole += [tmp]
+                if len(straight) < 5:
+                    straight_index = tmp + 1
+                    straight = straight[straight.index(Ghost) + 1:] + [Ghost, tmp]
+                continue
+
+            # 如果tmp 与 straight 相隔 超过一位
+            if tmp < straight_index - 2:
+                whole += [tmp]
+                if len(straight) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
+                    straight_index = tmp + 1
+                    straight = [Ghost, tmp]
+                continue
+
+            # if tmp < straight_index - 1:
             #     whole += [tmp]
-            #     flush = [tmp] if len(l) >= 4 else flush
-
-        elif flush[-1] == Ghost:
-            if tmp == flush_index - 1:
-                whole += [tmp]
-                flush.append(tmp)
-                continue
-
-            # 如果tmp 与 flush 相隔 一位
-            if tmp == flush_index - 2:
-                whole += [tmp]
-                if len(flush) < 5:
-                    flush_index = tmp + 1
-                    flush = flush[flush.index(Ghost) + 1:] + [Ghost, tmp]
-                continue
-
-            # 如果tmp 与 flush 相隔 超过一位
-            if tmp < flush_index - 2:
-                whole += [tmp]
-                if len(flush) < 5:                 # 如果遍历到的顺子不到5, 则重新计算顺子
-                    flush_index = tmp + 1
-                    flush = [Ghost, tmp]
-                continue
-
-            # if tmp < flush_index - 1:
-            #     whole += [tmp]
-            #     flush = [tmp] if len(l) >= 4 else flush
+            #     straight = [tmp] if len(l) >= 4 else straight
 
     # print("======WHOLE!!!!!!!", whole)
-    # print("======flush=======", flush)
+    # print("======straight=======", straight)
     if Ghost in whole:
         whole.remove(Ghost)
     if multi4:
@@ -394,16 +397,15 @@ def rank_level_with_ghost(l):
         whole.remove(multi3[0])
         return 8, multi3 + [multi3[0]] + whole[:1]
 
-    if multi2 and multi22:
+    if multi2 and multi22:  # multi2 肯定比 multi22 大， 因此不需要在这里进行比较
         whole.remove(multi2[0])
         whole.remove(multi22[0])
         return 7, multi2 + [multi2[0]] + multi22
 
-    if len(flush) >= 5:
-        if Ghost in flush:
-            flush[flush.index(Ghost)] = flush_index
-            print(flush)
-        return 5, flush[:5]
+    if len(straight) >= 5:
+        if Ghost in straight:
+            straight[straight.index(Ghost)] = straight_index
+        return 5, straight[:5]
 
     if multi2:
         whole.remove(multi2[0])
