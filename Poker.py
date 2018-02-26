@@ -1,13 +1,13 @@
 # coding: utf-8
 
-import time, logging, os
+import time, logging, os, sorts
 import poker_transformation as pt
 import poker_comparison as cmp
 import verification as vf
 
 
 def poker(file_in, file_out):
-    start = time.clock()   # 开始时间
+    start = time.clock()  # 开始时间
 
     data = pt.file2json(pt.path + file_in)
     match = data["matches"]
@@ -23,7 +23,7 @@ def poker(file_in, file_out):
         flag += 1
     # pt.json2file(data, pt.my_path + file_out)
 
-    end = time.clock()     # 结束时间
+    end = time.clock()  # 结束时间
     print("%f秒" % (end - start))
     pt.json2file(data, pt.my_path + file_out)
 
@@ -52,9 +52,11 @@ def poker_quick(file_in, file_out):
 
 
 if __name__ == "__main__":
+    sorts.time_for_sorting()
     os.remove("./err.log")
     logging.basicConfig(filename='err.log', level=logging.DEBUG)
 
+    print("\n\n*********************************")
     print("7张牌 无赖子")
     poker("seven_cards.json", "seven_cards.my.json")
     vf.check_result(pt.path + "seven_cards.result.json", pt.my_path + "seven_cards.my.json")

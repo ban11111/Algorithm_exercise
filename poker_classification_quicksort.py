@@ -29,6 +29,7 @@ def quick_classify(list_list):
             return quick_level_with_ghost(pt.list_list2num_list(list_list))
 
 
+# 判断同花顺
 def quick_straight_flush(l):
     l.sort(reverse=True)
     if l[-1] != Ghost:
@@ -51,6 +52,7 @@ def quick_straight_flush(l):
         return Flush, l[:5]
 
 
+# (无赖子)判断其他牌型
 def quick_level(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)
@@ -108,6 +110,7 @@ def quick_level(l):
         return NoHand, ls[:5]
 
 
+# (有赖子)判断其他牌型
 def quick_level_with_ghost(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)

@@ -1,4 +1,6 @@
 import random
+import time
+import poker_transformation as pt
 
 
 def flush(list_list):
@@ -159,5 +161,17 @@ def merge_sort(lists):
     return merge(left, right)
 
 
+def time_for_sorting():
+    start = time.clock()
+    data = pt.file2json(pt.path + "seven_cards.json")
+    match = data["matches"]
+    for i in match:
+        qsort(pt.list_list2num_list(pt.str2list_list(i["alice"])))
+        qsort(pt.list_list2num_list(pt.str2list_list(i["bob"])))
+    end = time.clock()
+    print("光排序花费的时间(7张牌 无赖子): %f" % (end - start))
+
+
 if __name__ == "__main__":
     print(qsort([5, 2, 1, 0, 67, 2, 43, 2, 87]))
+    time_for_sorting()
