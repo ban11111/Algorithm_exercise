@@ -1,5 +1,6 @@
 import poker_classification as pc
 import poker_transformation as pt
+import sorts
 
 # 常量
 StraightFlush, FourOfAKind, FullHouse, Flush, Straight, ThreeOfAKind, TwoPairs, OnePair, NoHand = \
@@ -52,7 +53,8 @@ def quick_straight_flush(l):
 
 def quick_level(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
-    ls = sorted(set(l), reverse=True)
+    # ls = sorted(set(l), reverse=True)
+    ls = sorts.qsort(l)
     if ls[0] == 14:
         ls.append(1)
 
@@ -108,7 +110,8 @@ def quick_level(l):
 
 def quick_level_with_ghost(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
-    ls = sorted(set(l), reverse=True)
+    # ls = sorted(set(l), reverse=True)
+    ls = sorts.qsort(l)
     ls.pop()
     l.remove(Ghost)
     if ls[0] == 14:

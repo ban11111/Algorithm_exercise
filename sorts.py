@@ -62,10 +62,10 @@ def qsort(l):
     if len(l) < 2:
         return l
     pivot_element = random.choice(l)
-    small = [i for i in l if i[0] < pivot_element[0]]
+    large = [i for i in l if i > pivot_element]
     # medium = [i for i in L if i==pivot_element]
-    large = [i for i in l if i[0] > pivot_element[0]]
-    return qsort(small) + [pivot_element] + qsort(large)
+    small = [i for i in l if i < pivot_element]
+    return qsort(large) + [pivot_element] + qsort(small)
 
 
 def bubsort(l):
@@ -157,3 +157,7 @@ def merge_sort(lists):
     left = merge_sort(lists[:num])
     right = merge_sort(lists[num:])
     return merge(left, right)
+
+
+if __name__ == "__main__":
+    print(qsort([5,2,1,0,67,2,43,2,87]))
