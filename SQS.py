@@ -191,7 +191,7 @@ def GetSQSValue4(calculateyear):
                 if (month == 4 or month == 6 or month == 9) and date1 == 3:
                     i = 1
                 if month == 2 and date1 == 2:
-                    i = 10 if ((2003 % 4 == 0 and 2003 % 100 != 0) or 2003 % 400 == 0) else 9
+                    i = 10 if ((calculateyear % 4 == 0 and calculateyear % 100 != 0) or calculateyear % 400 == 0) else 9
                 if (month == 2 and date1 < 2) or (month != 2 and date1 < 3):
                     i = 10
                 for date2 in range(j, i):
@@ -217,6 +217,9 @@ def GetSQSValue4(calculateyear):
                                                                     if tmpsec2 not in tmpset8:
                                                                         answer += 1
     return answer
+
+
+# todo, 查表法
 
 
 if __name__ == "__main__":

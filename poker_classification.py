@@ -1,4 +1,5 @@
 import poker_transformation as pt
+import poker_classification_quicksort as pcq
 
 
 # 常量
@@ -63,7 +64,7 @@ def rank_flush(l):
     if len(s) + len(n) >= 5:
         return pt.list_list2num_list(s + n)
     if n:
-        return [1]
+        return [len(n)]
     return [0]
 
 
@@ -422,10 +423,10 @@ def rank_value(l):
     if len(l) != 5:
         raise Exception("只能接收5张作为最终牌型!")
     value = 0
-    if type(l[0]) == int:
-        for i in range(0, 5):
-            value += l[i] * 16 ** (4 - i)
-    else:
-        for i in range(0, 5):
-            value += l[i][0] * 16 ** (4 - i)
+    # if type(l[0]) == int:
+    for i in range(0, 5):
+        value += l[i] * 16 ** (4 - i)
+    # else:
+    #     for i in range(0, 5):
+    #         value += l[i][0] * 16 ** (4 - i)
     return value

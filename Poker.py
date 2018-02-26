@@ -21,10 +21,33 @@ def poker(file_in, file_out):
         else:
             i["result"] = result
         flag += 1
-    pt.json2file(data, pt.my_path + file_out)
+    # pt.json2file(data, pt.my_path + file_out)
 
     end = time.clock()     # 结束时间
     print("%f秒" % (end - start))
+    pt.json2file(data, pt.my_path + file_out)
+
+
+def poker_quick(file_in, file_out):
+    start = time.clock()  # 开始时间
+
+    data = pt.file2json(pt.path + file_in)
+    match = data["matches"]
+    flag = 1
+
+    for i in match:
+        try:
+            result = cmp.compare(i)
+        except Exception as e:
+            logging.error("第%s行出错, err: %s" % (flag, e))
+        else:
+            i["result"] = result
+        flag += 1
+    # pt.json2file(data, pt.my_path + file_out)
+
+    end = time.clock()  # 结束时间
+    print("%f秒" % (end - start))
+    pt.json2file(data, pt.my_path + file_out)
 
 
 if __name__ == "__main__":
@@ -45,3 +68,8 @@ if __name__ == "__main__":
 
     print("5张牌 有赖子")
     poker("five_cards_with_ghost.json", "five_ghost.my.json")
+
+    print("\n\n*********************************")
+    print("quick-classify, 7张牌 有赖子")
+    poker_quick("seven_cards_with_ghost.json", "seven_ghost.my.json")
+    vf.check_result(pt.path + "seven_cards_with_ghost.result.json", pt.my_path + "seven_ghost.my.json")
