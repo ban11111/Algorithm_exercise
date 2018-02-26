@@ -97,7 +97,7 @@ def rank_straight_flush_with_ghost(l):
     original = l.copy()
     straight = [max(l)]
     if straight[0] == 14:
-        l.append(1)
+        l.insert(-1, 1)  # 标记一下, 最后一个bug修复成功!
         straight_index, max_index = 13, 13
     else:
         straight[0] = Ghost
