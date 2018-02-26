@@ -71,10 +71,17 @@ if __name__ == "__main__":
     poker("five_cards_with_ghost.json", "five_ghost.my.json")
 
     print("\n\n*********************************")
+    print("quick-classify, 7张牌 无赖子")
+    poker_quick("seven_cards.json", "seven_cards.my.json")
+    vf.check_result(pt.path + "seven_cards.result.json", pt.my_path + "seven_cards.my.json")
+
+    print("quick-classify, 5张牌 无赖子")
+    poker_quick("match.json", "five_cards.my.json")
+    vf.check_result(pt.path + "result.json", pt.my_path + "five_cards.my.json")
+
     print("quick-classify, 7张牌 有赖子")
     poker_quick("seven_cards_with_ghost.json", "seven_ghost.my.json")
     vf.check_result(pt.path + "seven_cards_with_ghost.result.json", pt.my_path + "seven_ghost.my.json")
 
-    print("5张牌 无赖子")
-    poker_quick("match.json", "five_cards.my.json")
-    vf.check_result(pt.path + "result.json", pt.my_path + "five_cards.my.json")
+    print("quick-classify, 5张牌 有赖子")
+    poker_quick("five_cards_with_ghost.json", "five_ghost.my.json")
