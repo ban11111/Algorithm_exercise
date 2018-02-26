@@ -28,6 +28,7 @@ def poker(file_in, file_out):
     pt.json2file(data, pt.my_path + file_out)
 
 
+# 第二个方法
 def poker_quick(file_in, file_out):
     start = time.clock()  # 开始时间
 
@@ -43,9 +44,9 @@ def poker_quick(file_in, file_out):
         else:
             i["result"] = result
         flag += 1
-    # pt.json2file(data, pt.my_path + file_out)
 
     end = time.clock()  # 结束时间
+
     print("%f秒" % (end - start))
     pt.json2file(data, pt.my_path + file_out)
 
@@ -73,3 +74,7 @@ if __name__ == "__main__":
     print("quick-classify, 7张牌 有赖子")
     poker_quick("seven_cards_with_ghost.json", "seven_ghost.my.json")
     vf.check_result(pt.path + "seven_cards_with_ghost.result.json", pt.my_path + "seven_ghost.my.json")
+
+    print("5张牌 无赖子")
+    poker_quick("match.json", "five_cards.my.json")
+    vf.check_result(pt.path + "result.json", pt.my_path + "five_cards.my.json")

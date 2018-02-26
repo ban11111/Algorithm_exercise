@@ -423,10 +423,9 @@ def rank_value(l):
     if len(l) != 5:
         raise Exception("只能接收5张作为最终牌型!")
     value = 0
-    # if type(l[0]) == int:
+    # 针对quick_classify做额外判断 (顺子,或同花顺,赖子在中间的情况)
+    if l[4] == Ghost:
+        value = l[0]
     for i in range(0, 5):
         value += l[i] * 16 ** (4 - i)
-    # else:
-    #     for i in range(0, 5):
-    #         value += l[i][0] * 16 ** (4 - i)
     return value

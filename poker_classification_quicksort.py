@@ -44,7 +44,7 @@ def quick_straight_flush(l):
             l.append(1)
         for i in range(0, len(l) - 3):
             if l[i] - l[i + 3] == 4:
-                return StraightFlush, l[i: i + 4]
+                return StraightFlush, l[i: i + 4] + [Ghost]
             if l[i] - l[i + 3] == 3:
                 return StraightFlush, [14] + l[i: i + 4] if l[i] == 13 else l[i: i + 4] + [l[i] - 1]
         return Flush, l[:5]
@@ -116,7 +116,7 @@ def quick_level_with_ghost(l):
 
     for i in range(0, len(ls) - 3):
         if ls[i] - ls[i + 3] == 4:
-            straight = ls[i: i + 4]
+            straight = ls[i: i + 4] + [Ghost]
             break
         if ls[i] - ls[i + 3] == 3:
             straight = [14] + ls[i: i + 4] if ls[i] == 13 else ls[i: i + 4] + [ls[i] - 1]
