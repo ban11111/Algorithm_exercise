@@ -160,4 +160,4 @@ def merge_sort(lists):
 
 
 if __name__ == "__main__":
-    print(qsort([5,2,1,0,67,2,43,2,87]))
+    print(qsort([5, 2, 1, 0, 67, 2, 43, 2, 87]))

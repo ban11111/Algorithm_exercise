@@ -54,7 +54,7 @@ def quick_straight_flush(l):
 def quick_level(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)
-    ls = sorts.qsort(l)
+    ls = sorts.qsort(l)  # 快速去重排序
     if ls[0] == 14:
         ls.append(1)
 
@@ -111,7 +111,7 @@ def quick_level(l):
 def quick_level_with_ghost(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)
-    ls = sorts.qsort(l)
+    ls = sorts.qsort(l)  # 快速去重排序
     ls.pop()
     l.remove(Ghost)
     if ls[0] == 14:
