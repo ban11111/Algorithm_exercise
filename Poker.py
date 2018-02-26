@@ -17,7 +17,6 @@ def poker(file_in, file_out):
         try:
             result = cmp.compare(i)
         except Exception as e:
-            pass
             logging.error("第%s行出错, err: %s" % (flag, e))
         else:
             i["result"] = result
@@ -31,18 +30,18 @@ def poker(file_in, file_out):
 if __name__ == "__main__":
     os.remove("./err.log")
     logging.basicConfig(filename='err.log', level=logging.DEBUG)
-    # 7张牌 无赖子
+
     print("7张牌 无赖子")
     poker("seven_cards.json", "seven_cards.my.json")
     vf.check_result(pt.path + "seven_cards.result.json", pt.my_path + "seven_cards.my.json")
-    # 5张牌 无赖子
+
     print("5张牌 无赖子")
     poker("match.json", "five_cards.my.json")
     vf.check_result(pt.path + "result.json", pt.my_path + "five_cards.my.json")
-    # 7张牌 有赖子
+
     print("7张牌 有赖子")
     poker("seven_cards_with_ghost.json", "seven_ghost.my.json")
     vf.check_result(pt.path + "seven_cards_with_ghost.result.json", pt.my_path + "seven_ghost.my.json")
-    # 5张牌 有赖子
+
     print("5张牌 有赖子")
     poker("five_cards_with_ghost.json", "five_ghost.my.json")

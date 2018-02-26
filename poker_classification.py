@@ -85,8 +85,8 @@ def rank_straight_flush(l):
         if tmp < straight[-1] - 1 and len(l) >= 4:
             straight = [tmp]
             continue
-        return 6, sorted(original, reverse=True)[:5]
-    return 9, straight
+        return Flush, sorted(original, reverse=True)[:5]
+    return StraightFlush, straight
 
 
 # 同花列表, 带赖子, 值-1 代表赖子 todo, 同花中,赖子是否可以变成 "已有的牌" 中相同的一张牌? 目前做法是不能.
@@ -169,9 +169,9 @@ def rank_straight_flush_with_ghost(l):
 
     if len(straight) < 5:
         original.append(max_index)
-        return 6, sorted(original, reverse=True)[:5]
+        return Flush, sorted(original, reverse=True)[:5]
     straight[straight.index(Ghost)] = straight_index
-    return 9, straight[:5]
+    return StraightFlush, straight[:5]
 
 
 # 不带花色的列表
@@ -238,30 +238,30 @@ def rank_level(l):
     if multi4:
         x = set(whole + l)
         x.remove(multi4[0])
-        return 8, multi4 + sorted(x, reverse=True)[:1]
+        return FourOfAKind, multi4 + sorted(x, reverse=True)[:1]
 
     if multi3 and multi2:
-        return 7, multi3 + multi2
+        return FullHouse, multi3 + multi2
 
     if len(straight) >= 5:
-        return 5, straight[:5]
+        return Straight, straight[:5]
 
     if multi3:
         whole.remove(multi3[0])
-        return 4, multi3 + whole[:2]
+        return ThreeOfAKind, multi3 + whole[:2]
 
     if multi2 and multi22:
         whole.remove(multi2[0])
         whole.remove(multi22[0])
-        return 3, multi2 + multi22 + whole[:1]
+        return TwoPairs, multi2 + multi22 + whole[:1]
 
     if multi2:
         # print("rank2", whole)
         whole.remove(multi2[0])
-        return 2, multi2 + whole[:3]
+        return OnePair, multi2 + whole[:3]
 
     if not multi2:
-        return 1, whole[:5]
+        return NoHand, whole[:5]
 
 
 # 带赖子, 判断牌型
@@ -386,34 +386,34 @@ def rank_level_with_ghost(l):
     if Ghost in whole:
         whole.remove(Ghost)
     if multi4:
-        return 8, multi4 + [13] if multi4[0] == 14 else [14]
+        return FourOfAKind, multi4 + [13] if multi4[0] == 14 else [14]
 
     if multi3 and multi2:
         x = set(whole + l)
         x.remove(multi3[0])
-        return 8, multi3 + [multi3[0], max(x)]
+        return FourOfAKind, multi3 + [multi3[0], max(x)]
 
     if multi3:
         whole.remove(multi3[0])
-        return 8, multi3 + [multi3[0]] + whole[:1]
+        return FourOfAKind, multi3 + [multi3[0]] + whole[:1]
 
     if multi2 and multi22:  # multi2 肯定比 multi22 大， 因此不需要在这里进行比较
         whole.remove(multi2[0])
         whole.remove(multi22[0])
-        return 7, multi2 + [multi2[0]] + multi22
+        return FullHouse, multi2 + [multi2[0]] + multi22
 
     if len(straight) >= 5:
         if Ghost in straight:
             straight[straight.index(Ghost)] = straight_index
-        return 5, straight[:5]
+        return Straight, straight[:5]
 
     if multi2:
         whole.remove(multi2[0])
-        return 4, multi2 + [multi2[0]] + whole[:2]
+        return ThreeOfAKind, multi2 + [multi2[0]] + whole[:2]
 
     if not multi2:
         whole.insert(0, whole[0])
-        return 2, whole[:5]
+        return OnePair, whole[:5]
 
 
 # 计算权重分值
