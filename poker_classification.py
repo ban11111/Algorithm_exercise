@@ -423,9 +423,16 @@ def rank_value(l):
     if len(l) != 5:
         raise Exception("只能接收5张作为最终牌型!")
     value = 0
-    # 针对quick_classify做额外判断 (顺子,或同花顺,赖子在中间的情况) 只需比较最大值
-    if l[4] == Ghost:
-        return l[0]
+    # # 针对quick_classify做额外判断 (顺子,或同花顺,赖子在中间的情况)
+    # if l[4] == Ghost:
+    #     return l[0]
     for i in range(0, 5):
         value += l[i] * 16 ** (4 - i)
     return value
+
+
+# 顺子和同花顺分离开来判断, 少做一些计算
+def rank_straight_value(l):
+    if len(l) != 5:
+        raise Exception("只能接收5张作为最终牌型!")
+    return l[0]

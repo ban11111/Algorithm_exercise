@@ -17,8 +17,12 @@ def compare(line):
     elif arank < brank:
         return 2
     else:
-        avalue = pc.rank_value(alist)
-        bvalue = pc.rank_value(blist)
+        if arank == 9 or arank == 5:
+            avalue = pc.rank_straight_value(alist)
+            bvalue = pc.rank_straight_value(blist)
+        else:
+            avalue = pc.rank_value(alist)
+            bvalue = pc.rank_value(blist)
 
         if avalue > bvalue:
             return 1
@@ -41,8 +45,12 @@ def compare_quick(line):
     elif arank < brank:
         return 2
     else:
-        avalue = pc.rank_value(alist)
-        bvalue = pc.rank_value(blist)
+        if arank == 9 or arank == 5:
+            avalue = pc.rank_straight_value(alist)
+            bvalue = pc.rank_straight_value(blist)
+        else:
+            avalue = pc.rank_value(alist)
+            bvalue = pc.rank_value(blist)
 
         if avalue > bvalue:
             return 1
