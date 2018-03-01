@@ -16,7 +16,12 @@ def quick_classify(list_list):
         if crank[0] == 9:
             return crank
         else:
-            rank = quick_level(pt.list_list2num_list(list_list))
+            rank = [0]
+            if (len(c) == 1 and c[0] == 0) or (len(c) > 1 and c[-1] != Ghost):  # 没有赖子
+                rank = quick_level(pt.list_list2num_list(list_list))
+            if (len(c) == 1 and c[0] == 1) or (len(c) > 1 and c[-1] == Ghost):  # 如果有赖子
+                rank = quick_level_with_ghost(pt.list_list2num_list(list_list))
+
             if rank[0] > crank[0]:
                 return rank
             else:
@@ -31,32 +36,40 @@ def quick_classify(list_list):
 
 # 判断同花顺
 def quick_straight_flush(l):
-    l.sort(reverse=True)
-    if l[-1] != Ghost:
-        if l[0] == 14:
-            l.append(1)
-        for i in range(0, len(l) - 4):
-            if l[i] - l[i + 4] == 4:
-                return StraightFlush, l[i: i + 5]
-        return Flush, l[:5]
+    # l.sort(reverse=True)
+    ls = sorts.radix_sort(l)  # 基数排序
+    if ls[-1] != Ghost:
+        if ls[0] == 14:
+            ls.append(1)
+        for i in range(0, len(ls) - 4):
+            if ls[i] - ls[i + 4] == 4:
+                return StraightFlush, ls[i: i + 5]
+        return Flush, ls[:5]
 
     else:
-        l.pop()
-        if l[0] == 14:
-            l.append(1)
-        for i in range(0, len(l) - 3):
-            if l[i] - l[i + 3] == 4:
-                return StraightFlush, l[i: i + 4] + [Ghost]
-            if l[i] - l[i + 3] == 3:
-                return StraightFlush, [14] + l[i: i + 4] if l[i] == 13 else l[i: i + 4] + [l[i] - 1]
-        return Flush, l[:5]
+        ls.pop()
+        if ls[0] == 14:
+            ls.append(1)
+        for i in range(0, len(ls) - 3):
+            if ls[i] - ls[i + 3] == 4:
+                return StraightFlush, ls[i: i + 4] + [Ghost]
+            if ls[i] - ls[i + 3] == 3:
+                return StraightFlush, [14] + ls[i: i + 4] if ls[i] == 13 else ls[i: i + 4] + [ls[i] - 1]
+        if ls[0] != 14:
+            return Flush, [14] + ls[:4]
+        for i in range(1, 5):
+            if ls[i] != ls[i - 1] - 1:
+                ls.insert(i, ls[i - 1] - 1)
+                break
+        return Flush, ls[:5]
 
 
 # (无赖子)判断其他牌型
 def quick_level(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)
-    ls = sorts.qsort(l)  # 快速去重排序
+    # ls = sorts.qsort(l)  # 快速去重排序
+    ls = sorts.radix_sort(l)  # 基数排序
     if ls[0] == 14:
         ls.append(1)
 
@@ -114,7 +127,8 @@ def quick_level(l):
 def quick_level_with_ghost(l):
     straight, multi2, multi22, multi3, multi4 = [], [], [], [], []
     # ls = sorted(set(l), reverse=True)
-    ls = sorts.qsort(l)  # 快速去重排序
+    # ls = sorts.qsort(l)  # 快速去重排序
+    ls = sorts.radix_sort(l)  # 基数排序
     ls.pop()
     l.remove(Ghost)
     if ls[0] == 14:

@@ -38,7 +38,7 @@ def poker_quick(file_in, file_out):
 
     for i in match:
         try:
-            result = cmp.compare(i)
+            result = cmp.compare_quick(i)
         except Exception as e:
             logging.error("第%s行出错, err: %s" % (flag, e))
         else:

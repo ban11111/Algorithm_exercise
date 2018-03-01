@@ -166,12 +166,21 @@ def time_for_sorting():
     data = pt.file2json(pt.path + "seven_cards.json")
     match = data["matches"]
     for i in match:
-        qsort(pt.list_list2num_list(pt.str2list_list(i["alice"])))
-        qsort(pt.list_list2num_list(pt.str2list_list(i["bob"])))
+        radix_sort(pt.list_list2num_list(pt.str2list_list(i["alice"])))
+        radix_sort(pt.list_list2num_list(pt.str2list_list(i["bob"])))
     end = time.clock()
     print("光排序花费的时间(7张牌 无赖子): %f" % (end - start))
 
 
+# 基数排序(去重)
+def radix_sort(lists):
+    base = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in lists:
+        base[14 - i] = i
+    result = [i for i in base if i != 0]
+    return result
+
+
 if __name__ == "__main__":
-    print(qsort([5, 2, 1, 0, 67, 2, 43, 2, 87]))
+    print(radix_sort([5, 2, 1, 0, 14, 2, 5, 2, 12]))
     time_for_sorting()

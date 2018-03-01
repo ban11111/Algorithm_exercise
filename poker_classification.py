@@ -63,9 +63,7 @@ def rank_flush(l):
         return pt.list_list2num_list(d + n)
     if len(s) + len(n) >= 5:
         return pt.list_list2num_list(s + n)
-    if n:
-        return [len(n)]
-    return [0]
+    return [len(n)]
 
 
 # 传入同花的列表， 判断是否是同花顺

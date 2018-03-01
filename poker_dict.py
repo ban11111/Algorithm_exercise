@@ -11,6 +11,7 @@ class PokerDicts:
         self.numDict["K"] = 13
         self.numDict["A"] = 14
         self.numDict["X"] = -1
+        print("转换字典生成成功!\n")
 
         # for i in ["s", "h", "d", "c"]:
         #     for key, value in self.numDict.items():
