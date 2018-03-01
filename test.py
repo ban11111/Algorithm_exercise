@@ -46,9 +46,13 @@ class TestPoker(unittest.TestCase):
         ghost.append({"alice": "XnAsKsQsJsTs9s", "bob": "Xn7hKh3hQhJhTh", "result": 0})
         ghost.append({"alice": "9sTcKh7h2dXn8s", "bob": "Qh9sTcKhXn6h5s", "result": 2})
         ghost.append({"alice": "As5d4h3h5sXn2s", "bob": "9c5hAsXn4d2s5d", "result": 1})
-        ghost.append({"alice": "4c5h3s7h9h6d8s", "bob": "4h5s8c7h9h6s3s", "result": 0})
-        ghost.append({"alice": "3hAs4dKh8h6h5s", "bob": "6dAsTd5h4d7h9s", "result": 1})
-        ghost.append({"alice": "Ad5d2c3d2d5s3s", "bob": "2c4d2d4s5d5s7h", "result": 2})
+        ghost.append({"alice": "4c5hXn7h9h6d8s", "bob": "4h5s8c7h9h6sXn", "result": 0})
+        ghost.append({"alice": "3hAs4dKh8h6hXn", "bob": "6dAsTdXn4d7h9s", "result": 1})
+        ghost.append({"alice": "3hAs4dKh8h6hXn", "bob": "6dAsTdXn4d7hKs", "result": 1})
+        ghost.append({"alice": "3hAs4dKh8d6hXn", "bob": "6dAsTdXn4d7hKs", "result": 2})
+        ghost.append({"alice": "ThAs4dKh8d6hXn", "bob": "6dAsTdXn4d8hKs", "result": 0})
+        ghost.append({"alice": "Ad5d2cXn2d5s3s", "bob": "2c4d2dXn5d5s7h", "result": 0})
+        ghost.append({"alice": "Ad5d2cXn2d5s3s", "bob": "2c4d2dXn5d2s7h", "result": 2})
 
         for i in ghost:
             self.assertEqual(i["result"], cmp.compare_quick(i), "alice: " + i["alice"] + "  bob: " + i["bob"])
