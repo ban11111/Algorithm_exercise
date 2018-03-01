@@ -63,7 +63,7 @@ def compare_quick(line):
 # 测试
 if __name__ == "__main__":
     ghost = list()
-    ghost.append({"alice": "QcTdKcAdJs2h9s", "bob": "Jc2cQcTdKcAdJs", "result": 0})
+    ghost.append({"alice": "As5d4h3h5sXn2s", "bob": "9c5hAsXn4d2s5d", "result": 1})
     ghost.append({"alice": "9sTcXnKh4d7hJs", "bob": "7sQh9sTcXnKh4d", "result": 0})
     ghost.append({"alice": "XnAsQd4hKh4dJc", "bob": "5cJhXnAsQd4hKh", "result": 0})
     ghost.append({"alice": "4c5h3s7h9h2hAh", "bob": "4hXn4c5h3s7h9h", "result": 2})
@@ -73,5 +73,5 @@ if __name__ == "__main__":
     # for i in ghost:
     #     r = compare(i)
     #     print(r)
-    r = compare(ghost[0])
+    r = compare_quick(ghost[0])
     print(r)

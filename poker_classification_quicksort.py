@@ -125,7 +125,7 @@ def quick_level_with_ghost(l):
             straight = ls[i: i + 4] + [Ghost]
             break
         if ls[i] - ls[i + 3] == 3:
-            straight = [14] + ls[i: i + 4] if ls[i] == 13 else ls[i: i + 4] + [ls[i] - 1]
+            straight = [14] + ls[i: i + 4] if ls[i] == 13 else [ls[i] + 1] + ls[i: i + 4]
             break
 
     for i in ls:
