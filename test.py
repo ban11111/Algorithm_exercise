@@ -57,6 +57,14 @@ class TestPoker(unittest.TestCase):
         for i in ghost:
             self.assertEqual(i["result"], cmp.compare_quick(i), "alice: " + i["alice"] + "  bob: " + i["bob"])
 
+    def test_everything(self):
+        ghost = list()
+        ghost.append({"alice": "XnAsKsQsJsTs9s3s4s", "bob": "Xn7hQhJhTh", "result": 1})
+        ghost.append({"alice": "XnAsKsQsJsTs9s3s4s", "bob": "Xn7hQhJhThKh", "result": 0})
+
+        for i in ghost:
+            self.assertEqual(i["result"], cmp.compare_quick(i), "alice: " + i["alice"] + "  bob: " + i["bob"])
+
 
 if __name__ == '__main__':
     unittest.main()

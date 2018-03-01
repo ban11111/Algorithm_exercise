@@ -17,9 +17,9 @@ def quick_classify(list_list):
             return crank
         else:
             rank = [0]
-            if (len(c) == 1 and c[0] == 0) or (len(c) > 1 and c[-1] != Ghost):  # 没有赖子
+            if c[-1] != Ghost:  # 没有赖子
                 rank = quick_level(pt.list_list2num_list(list_list))
-            if (len(c) == 1 and c[0] == 1) or (len(c) > 1 and c[-1] == Ghost):  # 如果有赖子
+            if c[-1] == Ghost:  # 如果有赖子
                 rank = quick_level_with_ghost(pt.list_list2num_list(list_list))
 
             if rank[0] > crank[0]:
