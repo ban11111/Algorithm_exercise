@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import time, logging, os, sorts
+import time, logging, os
 import poker_transformation as pt
 import poker_comparison as cmp
 import verification as vf

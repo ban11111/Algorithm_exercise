@@ -32,10 +32,22 @@ def str2list(string):
 
 
 # 字符串 转 list_list
-def str2list_list(string):
+def str2list_list_old(string):
     list_list = []
     for i in str2list(string):
         list_list.append([numDict[i[0]], i[1]])
+    return list_list
+
+
+# 字符串 转 list_list
+def str2list_list(string):
+    list_list = []
+    for i in range(1, int(len(string) / 2) + 1):
+        index = i + i - 1
+        value = pokerDict[string[index - 1:index + 1]]
+        if not value:
+            raise Exception("输入牌型有误:", string)
+        list_list.append(pokerDict[string[index - 1:index + 1]])
     return list_list
 
 
@@ -56,32 +68,38 @@ if __name__ == "__main__":
     print(li_li)
     li = list_list2num_list(li_li)
     print(li)
+    matches = data["matches"]
+    for line in matches:
+        lia1 = str2list_list_old(line["alice"])
+        lia2 = str2list_list(line["alice"])
+        if lia1 != lia2:
+            print("damn!", lia1, "fuck", lia2)
 
 
 # **************  下面的方法暂不需要  ****************
-def list2dict(poker_list, poker_dict):
-    result = {}
-    for value in poker_list:
-        result[value] = poker_dict[value]
-    return result
-
-
-def list2dict_list(poker_list, poker_dict):
-    dict_list = []
-    result = {}
-    for value in poker_list:
-        result[value[1:]] = poker_dict[value]
-        dict_list.append(result)
-        result = {}
-    return dict_list
-
-
-def list2list_list(poker_list, poker_dict):
-    list_list = []
-    result = []
-    for key in poker_list:
-        result.append(poker_dict[key])
-        result.append(key[1:])
-        list_list.append(result)
-        result = []
-    return list_list
+# def list2dict(poker_list, poker_dict):
+#     result = {}
+#     for value in poker_list:
+#         result[value] = poker_dict[value]
+#     return result
+#
+#
+# def list2dict_list(poker_list, poker_dict):
+#     dict_list = []
+#     result = {}
+#     for value in poker_list:
+#         result[value[1:]] = poker_dict[value]
+#         dict_list.append(result)
+#         result = {}
+#     return dict_list
+#
+#
+# def list2list_list(poker_list, poker_dict):
+#     list_list = []
+#     result = []
+#     for key in poker_list:
+#         result.append(poker_dict[key])
+#         result.append(key[1:])
+#         list_list.append(result)
+#         result = []
+#     return list_list
