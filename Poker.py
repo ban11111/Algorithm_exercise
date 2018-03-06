@@ -53,9 +53,9 @@ def poker_quick(file_in, file_out):
 
 if __name__ == "__main__":
     try:
-        os.mknod("err.log")
-    except FileExistsError:
         os.remove("./err.log")
+    except FileNotFoundError:
+        pass
     logging.basicConfig(filename='err.log', level=logging.DEBUG)
 
     print("\n\n*********************************")
