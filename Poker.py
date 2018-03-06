@@ -52,8 +52,10 @@ def poker_quick(file_in, file_out):
 
 
 if __name__ == "__main__":
-    # sorts.time_for_sorting()
-    os.remove("./err.log")
+    try:
+        os.mknod("err.log")
+    except FileExistsError:
+        os.remove("./err.log")
     logging.basicConfig(filename='err.log', level=logging.DEBUG)
 
     print("\n\n*********************************")
