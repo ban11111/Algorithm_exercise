@@ -1,6 +1,6 @@
 #### ApprovalInfo
 字段 | 类型 | 是否索引 | 是否可以为空 | 默认值 | 是否自增 | 备注
-- | :-: | -: 
+- | :-: | :-: |:-: |:-: |:-: | -: 
 id | uint | N | Y |  | Y | 
 created_at | Time | N | Y |  | N | 
 updated_at | Time | N | Y |  | N | 
