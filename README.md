@@ -1,6 +1,44 @@
-#### 移动端，共X人：
-1. 2018-05-23 19:00，手机号13000000003，产品：向钱贷，申请贷款，来源：手机端，source:XX,campaign:XX,channel:XX；
-2. 2018-05-23 21:00，手机号13000000004，产品：向钱贷，申请贷款，来源：手机端，source:XX,campaign:XX,channel:XX；
-#### PC端，共X人：
-1. 2018-05-23 19:00，手机号13000000001，客户黄先生，地区：深圳，产品：向钱贷，申请贷款20万，来源：PC端，source:XX,campaign:XX,channel:XX；
-2. 2018-05-23 20:00，手机号13000000002，客户黄先生，地区：深圳，产品：向钱贷，申请贷款20万，来源：PC端，source:XX,campaign:XX,channel:XX；
+#### ApprovalInfo
+字段 | 类型 | 是否索引 | 是否可以为空 | 默认值 | 是否自增 | 备注
+- | :-: | -: 
+id | uint | N | Y |  | Y | 
+created_at | Time | N | Y |  | N | 
+updated_at | Time | N | Y |  | N | 
+deleted_at | Time | N | Y |  | N | 
+jinjian_id | string | Y | Y |  | N | 
+name | string | N | Y |  | N | 
+id_card | string | N | Y |  | N | 
+id_card_place | string | N | Y |  | N | 
+id_card_ck_result | string | N | Y |  | N | 
+cellphone | string | N | Y |  | N | 
+email | string | N | Y |  | N | 
+we_chat | string | N | Y |  | N | 
+sex | string | N | Y |  | N | 
+marriage | string | N | Y |  | N | 
+children | string | N | Y |  | N | 
+education | string | N | Y |  | N | 
+loan_usage | string | N | Y |  | N | 
+household_city | string | N | Y |  | N | 
+address | string | N | Y |  | N | 
+job | string | N | Y |  | N | 
+work_phone | string | N | Y |  | N | 
+work_department | string | N | Y |  | N | 
+first_work_time | string | N | Y |  | N | 
+monthly_income | string | N | Y |  | N | 
+company_name | string | N | Y |  | N | 
+company_size | string | N | Y |  | N | 
+company_type | string | N | Y |  | N | 
+company_address | string | N | Y |  | N | 
+company_industry_category | string | N | Y |  | N | 
+house_type | string | N | Y |  | N | 
+has_house | string | N | Y |  | N | 
+has_house_loan | string | N | Y |  | N | 
+monthly_cost | string | N | Y |  | N | 
+has_car | string | N | Y |  | N | 
+has_car_loan | string | N | Y |  | N | 
+is_union_sign | string | N | Y |  | N | 
+union_sign_relationship | string | N | Y |  | N | 
+union_sign_name | string | N | Y |  | N | 
+union_sign_id_card | string | N | Y |  | N | 
+union_sign_phone | string | N | Y |  | N | 
+contract_num | string | N | Y |  | N | 
