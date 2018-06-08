@@ -42,3 +42,55 @@
 | union_sign_id_card | string | N | Y |  | N | 共签人身份证号 |
 | union_sign_phone | string | N | Y |  | N | 共签人手机号 |
 | contract_num | string | N | Y |  | N | 合同编号 |
+
+#### 保存及更新审批信息
+    url: /api/v1/approval/external/:approval_type/CreateOrUpdateApprovalInfo
+    method: POST
+    header:
+    {
+        SsoToken:"",
+        ApprovalType:""
+    }
+    req: {
+		"id":"",
+		"created_at":"",
+		"updated_at":"",
+		"deleted_at":"",
+		"jinjian_id":"",
+		"name":"",
+		"id_card":"",
+		"id_card_place":"",
+		"id_card_ck_result":"",
+		"cellphone":"",
+		"email":"",
+		"we_chat":"",
+		"sex":"",
+		"marriage":"",
+		"children":"",
+		"education":"",
+		"loan_usage":"",
+		"household_city":"",
+		"address":"",
+		"job":"",
+		"work_phone":"",
+		"work_department":"",
+		"first_work_time":"",
+		"monthly_income":"",
+		"company_name":"",
+		"company_size":"",
+		"company_type":"",
+		"company_address":"",
+		"company_industry_category":"",
+		"house_type":"",
+		"has_house":"",
+		"has_house_loan":"",
+		"monthly_cost":"",
+		"has_car":"",
+		"has_car_loan":"",
+		"is_union_sign":"",
+		"union_sign_relationship":"",
+		"union_sign_name":"",
+		"union_sign_id_card":"",
+		"union_sign_phone":"",
+		"contract_num":""
+	}
